@@ -1,0 +1,398 @@
+[
+  {
+    "offsetMs": 0,
+    "signal": {
+      "type": "swo.created",
+      "timestamp": 1000000000000,
+      "payload": {
+        "swo": {
+          "id": "swo-1",
+          "parentSwoId": null,
+          "title": "Market analysis report",
+          "assigneeId": "perry",
+          "status": "PENDING",
+          "progress": 0,
+          "createdAt": 1000000000000,
+          "updatedAt": 1000000000000
+        }
+      }
+    }
+  },
+  {
+    "offsetMs": 500,
+    "signal": {
+      "type": "agent.presence.changed",
+      "timestamp": 1000000000500,
+      "payload": { "agentId": "perry", "presence": "COMPUTING" }
+    }
+  },
+  {
+    "offsetMs": 500,
+    "signal": {
+      "type": "swo.updated",
+      "timestamp": 1000000000500,
+      "payload": {
+        "swo": { "id": "swo-1", "status": "IN_PROGRESS", "progress": 0.1 }
+      }
+    }
+  },
+  {
+    "offsetMs": 2000,
+    "signal": {
+      "type": "agent.presence.changed",
+      "timestamp": 1000000002000,
+      "payload": { "agentId": "perry", "presence": "READY" }
+    }
+  },
+  {
+    "offsetMs": 2000,
+    "signal": {
+      "type": "swo.updated",
+      "timestamp": 1000000002000,
+      "payload": {
+        "swo": { "id": "swo-1", "status": "IN_PROGRESS", "progress": 0.2 }
+      }
+    }
+  },
+  {
+    "offsetMs": 2000,
+    "signal": {
+      "type": "delegation.started",
+      "timestamp": 1000000002000,
+      "payload": { "fromAgentId": "perry", "toAgentId": "lois", "swoId": "swo-2" }
+    }
+  },
+  {
+    "offsetMs": 2100,
+    "signal": {
+      "type": "swo.created",
+      "timestamp": 1000000002100,
+      "payload": {
+        "swo": {
+          "id": "swo-2",
+          "parentSwoId": "swo-1",
+          "title": "Competitor research",
+          "assigneeId": "lois",
+          "status": "PENDING",
+          "progress": 0,
+          "createdAt": 1000000002100,
+          "updatedAt": 1000000002100
+        }
+      }
+    }
+  },
+  {
+    "offsetMs": 2200,
+    "signal": {
+      "type": "agent.presence.changed",
+      "timestamp": 1000000002200,
+      "payload": { "agentId": "lois", "presence": "COMPUTING" }
+    }
+  },
+  {
+    "offsetMs": 2200,
+    "signal": {
+      "type": "swo.updated",
+      "timestamp": 1000000002200,
+      "payload": {
+        "swo": { "id": "swo-2", "status": "IN_PROGRESS", "progress": 0.1 }
+      }
+    }
+  },
+  {
+    "offsetMs": 2300,
+    "signal": {
+      "type": "delegation.started",
+      "timestamp": 1000000002300,
+      "payload": { "fromAgentId": "perry", "toAgentId": "lex", "swoId": "swo-3" }
+    }
+  },
+  {
+    "offsetMs": 2400,
+    "signal": {
+      "type": "swo.created",
+      "timestamp": 1000000002400,
+      "payload": {
+        "swo": {
+          "id": "swo-3",
+          "parentSwoId": "swo-1",
+          "title": "Financial projections",
+          "assigneeId": "lex",
+          "status": "PENDING",
+          "progress": 0,
+          "createdAt": 1000000002400,
+          "updatedAt": 1000000002400
+        }
+      }
+    }
+  },
+  {
+    "offsetMs": 2500,
+    "signal": {
+      "type": "agent.presence.changed",
+      "timestamp": 1000000002500,
+      "payload": { "agentId": "lex", "presence": "COMPUTING" }
+    }
+  },
+  {
+    "offsetMs": 2500,
+    "signal": {
+      "type": "swo.updated",
+      "timestamp": 1000000002500,
+      "payload": {
+        "swo": { "id": "swo-3", "status": "IN_PROGRESS", "progress": 0.1 }
+      }
+    }
+  },
+  {
+    "offsetMs": 3500,
+    "signal": {
+      "type": "swo.updated",
+      "timestamp": 1000000003500,
+      "payload": {
+        "swo": { "id": "swo-2", "progress": 0.4 }
+      }
+    }
+  },
+  {
+    "offsetMs": 4000,
+    "signal": {
+      "type": "delegation.started",
+      "timestamp": 1000000004000,
+      "payload": { "fromAgentId": "lois", "toAgentId": "stacker", "swoId": "swo-4" }
+    }
+  },
+  {
+    "offsetMs": 4100,
+    "signal": {
+      "type": "swo.created",
+      "timestamp": 1000000004100,
+      "payload": {
+        "swo": {
+          "id": "swo-4",
+          "parentSwoId": "swo-2",
+          "title": "Data synthesis",
+          "assigneeId": "stacker",
+          "status": "PENDING",
+          "progress": 0,
+          "createdAt": 1000000004100,
+          "updatedAt": 1000000004100
+        }
+      }
+    }
+  },
+  {
+    "offsetMs": 4200,
+    "signal": {
+      "type": "agent.presence.changed",
+      "timestamp": 1000000004200,
+      "payload": { "agentId": "stacker", "presence": "COMPUTING" }
+    }
+  },
+  {
+    "offsetMs": 4200,
+    "signal": {
+      "type": "swo.updated",
+      "timestamp": 1000000004200,
+      "payload": {
+        "swo": { "id": "swo-4", "status": "IN_PROGRESS", "progress": 0.1 }
+      }
+    }
+  },
+  {
+    "offsetMs": 5000,
+    "signal": {
+      "type": "swo.updated",
+      "timestamp": 1000000005000,
+      "payload": {
+        "swo": { "id": "swo-3", "progress": 0.5 }
+      }
+    }
+  },
+  {
+    "offsetMs": 6000,
+    "signal": {
+      "type": "swo.updated",
+      "timestamp": 1000000006000,
+      "payload": {
+        "swo": { "id": "swo-4", "progress": 1 }
+      }
+    }
+  },
+  {
+    "offsetMs": 6200,
+    "signal": {
+      "type": "swo.completed",
+      "timestamp": 1000000006200,
+      "payload": {
+        "swo": { "id": "swo-4", "status": "COMPLETED", "progress": 1 }
+      }
+    }
+  },
+  {
+    "offsetMs": 6200,
+    "signal": {
+      "type": "agent.presence.changed",
+      "timestamp": 1000000006200,
+      "payload": { "agentId": "stacker", "presence": "READY" }
+    }
+  },
+  {
+    "offsetMs": 6300,
+    "signal": {
+      "type": "delegation.completed",
+      "timestamp": 1000000006300,
+      "payload": { "fromAgentId": "lois", "toAgentId": "stacker", "swoId": "swo-4" }
+    }
+  },
+  {
+    "offsetMs": 7000,
+    "signal": {
+      "type": "swo.updated",
+      "timestamp": 1000000007000,
+      "payload": {
+        "swo": { "id": "swo-3", "progress": 1 }
+      }
+    }
+  },
+  {
+    "offsetMs": 7200,
+    "signal": {
+      "type": "swo.completed",
+      "timestamp": 1000000007200,
+      "payload": {
+        "swo": { "id": "swo-3", "status": "COMPLETED", "progress": 1 }
+      }
+    }
+  },
+  {
+    "offsetMs": 7200,
+    "signal": {
+      "type": "agent.presence.changed",
+      "timestamp": 1000000007200,
+      "payload": { "agentId": "lex", "presence": "READY" }
+    }
+  },
+  {
+    "offsetMs": 7300,
+    "signal": {
+      "type": "delegation.completed",
+      "timestamp": 1000000007300,
+      "payload": { "fromAgentId": "perry", "toAgentId": "lex", "swoId": "swo-3" }
+    }
+  },
+  {
+    "offsetMs": 7500,
+    "signal": {
+      "type": "swo.updated",
+      "timestamp": 1000000007500,
+      "payload": {
+        "swo": { "id": "swo-2", "progress": 1 }
+      }
+    }
+  },
+  {
+    "offsetMs": 7700,
+    "signal": {
+      "type": "swo.completed",
+      "timestamp": 1000000007700,
+      "payload": {
+        "swo": { "id": "swo-2", "status": "COMPLETED", "progress": 1 }
+      }
+    }
+  },
+  {
+    "offsetMs": 7700,
+    "signal": {
+      "type": "agent.presence.changed",
+      "timestamp": 1000000007700,
+      "payload": { "agentId": "lois", "presence": "READY" }
+    }
+  },
+  {
+    "offsetMs": 7800,
+    "signal": {
+      "type": "delegation.completed",
+      "timestamp": 1000000007800,
+      "payload": { "fromAgentId": "perry", "toAgentId": "lois", "swoId": "swo-2" }
+    }
+  },
+  {
+    "offsetMs": 8500,
+    "signal": {
+      "type": "agent.presence.changed",
+      "timestamp": 1000000008500,
+      "payload": { "agentId": "perry", "presence": "COMPUTING" }
+    }
+  },
+  {
+    "offsetMs": 8500,
+    "signal": {
+      "type": "swo.updated",
+      "timestamp": 1000000008500,
+      "payload": {
+        "swo": { "id": "swo-1", "progress": 0.8 }
+      }
+    }
+  },
+  {
+    "offsetMs": 9500,
+    "signal": {
+      "type": "artifact.produced",
+      "timestamp": 1000000009500,
+      "payload": {
+        "swoId": "swo-1",
+        "agentId": "perry",
+        "artifact": {
+          "title": "Market Analysis Report",
+          "content": "# Market Analysis Report\n\n## Executive Summary\nBased on comprehensive competitor research and financial projections."
+        }
+      }
+    }
+  },
+  {
+    "offsetMs": 10000,
+    "signal": {
+      "type": "swo.updated",
+      "timestamp": 1000000010000,
+      "payload": {
+        "swo": { "id": "swo-1", "progress": 1 }
+      }
+    }
+  },
+  {
+    "offsetMs": 10000,
+    "signal": {
+      "type": "swo.completed",
+      "timestamp": 1000000010000,
+      "payload": {
+        "swo": { "id": "swo-1", "status": "COMPLETED", "progress": 1 }
+      }
+    }
+  },
+  {
+    "offsetMs": 10000,
+    "signal": {
+      "type": "agent.presence.changed",
+      "timestamp": 1000000010000,
+      "payload": { "agentId": "perry", "presence": "READY" }
+    }
+  },
+  {
+    "offsetMs": 10200,
+    "signal": {
+      "type": "inbox.item.added",
+      "timestamp": 1000000010200,
+      "payload": {
+        "item": {
+          "id": "inbox-swo-1",
+          "swoId": "swo-1",
+          "agentName": "Perry",
+          "title": "Market Analysis Report",
+          "content": "# Market Analysis Report\n\n## Executive Summary\nBased on comprehensive competitor research and financial projections.",
+          "timestamp": 1000000010200
+        }
+      }
+    }
+  }
+]

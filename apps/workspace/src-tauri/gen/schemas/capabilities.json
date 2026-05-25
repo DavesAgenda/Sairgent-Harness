@@ -1,0 +1,1 @@
+{"default":{"identifier":"default","description":"Deny-by-default: only permit explicitly listed IPC commands","local":true,"windows":["main"],"permissions":["core:event:default","core:window:default",{"identifier":"core:event:allow-emit","allow":[{"event":"runtime-signal"}]},{"identifier":"core:event:allow-listen","allow":[{"event":"runtime-signal"}]}]}}

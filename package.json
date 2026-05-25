@@ -1,0 +1,12 @@
+{
+  "name": "sairgent-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "@types/dompurify": "^3.0.5",
+    "dompurify": "^3.3.1"
+  }
+}

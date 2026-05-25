@@ -1,0 +1,33 @@
+[package]
+name = "workspace"
+version = "0.1.0"
+description = "Sairgent Workspace — spatial agent delegation UI"
+authors = ["you"]
+license = ""
+repository = ""
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+name = "workspace_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.5.6", features = [] }
+
+[dependencies]
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+log = "0.4"
+tauri = { version = "2.10.3", features = ["tray-icon"] }
+tauri-plugin-log = "2"
+sairgent_kernel = { path = "../../../sairgent_kernel" }
+keyring = { version = "3.6.3", features = ["apple-native"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time"] }
+uuid = { version = "1", features = ["v4"] }
+dirs = "6.0.0"
+toml = "1.0.4"
+lru = "0.12"
+rand = "0.8"
+base64 = "0.22"
+reqwest = { version = "0.12", features = ["json"] }

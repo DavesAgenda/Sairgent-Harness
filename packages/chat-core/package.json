@@ -1,0 +1,8 @@
+{
+    "name": "@sairgent/chat-core",
+    "version": "0.1.0",
+    "description": "Shared core types and IPC bridge for Sairgent chat",
+    "private": true,
+    "main": "./src/index.ts",
+    "types": "./src/index.ts"
+}

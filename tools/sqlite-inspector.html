@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SQLite Inspector</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: #0d1b2d;
+      --panel-2: #13253d;
+      --text: #e8eef8;
+      --muted: #8aa0bf;
+      --line: #233756;
+      --accent: #f59e0b;
+      --accent-2: #60a5fa;
+      --good: #34d399;
+      --bad: #f87171;
+      --mono: "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+      --sans: "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(245, 158, 11, 0.18), transparent 22rem),
+        radial-gradient(circle at top right, rgba(96, 165, 250, 0.16), transparent 20rem),
+        linear-gradient(180deg, #08111d 0%, #07111f 100%);
+      color: var(--text);
+      font-family: var(--sans);
+    }
+
+    .shell {
+      width: min(1400px, calc(100vw - 32px));
+      margin: 24px auto;
+      display: grid;
+      gap: 16px;
+    }
+
+    .hero,
+    .panel {
+      border: 1px solid var(--line);
+      background: rgba(13, 27, 45, 0.92);
+      backdrop-filter: blur(12px);
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+    }
+
+    .hero {
+      padding: 24px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 28px;
+      letter-spacing: -0.03em;
+    }
+
+    .lede {
+      margin-top: 10px;
+      color: var(--muted);
+      max-width: 60rem;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .controls {
+      display: grid;
+      gap: 14px;
+    }
+
+    .button,
+    .file-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 44px;
+      padding: 0 14px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(96, 165, 250, 0.18));
+      color: var(--text);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+      text-decoration: none;
+    }
+
+    .button:hover,
+    .file-label:hover {
+      transform: translateY(-1px);
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+
+    .button.secondary {
+      background: rgba(19, 37, 61, 0.9);
+      border-color: var(--line);
+    }
+
+    .button:disabled {
+      opacity: 0.55;
+      cursor: default;
+      transform: none;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    label,
+    .meta-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .meta-box {
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(19, 37, 61, 0.92);
+      border: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.5;
+      color: #dce7f7;
+      word-break: break-word;
+    }
+
+    .status {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(19, 37, 61, 0.7);
+      color: var(--muted);
+      min-height: 44px;
+      line-height: 1.4;
+    }
+
+    .status.good {
+      border-color: rgba(52, 211, 153, 0.35);
+      color: #c8fae7;
+      background: rgba(6, 54, 40, 0.5);
+    }
+
+    .status.bad {
+      border-color: rgba(248, 113, 113, 0.35);
+      color: #ffd6d6;
+      background: rgba(66, 20, 28, 0.5);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(7, 17, 31, 0.92);
+      color: var(--text);
+      padding: 14px;
+      font: 13px/1.5 var(--mono);
+    }
+
+    .content {
+      display: grid;
+      gap: 16px;
+    }
+
+    .table-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(19, 37, 61, 0.88);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 13px;
+      font-family: var(--mono);
+    }
+
+    .chip.active {
+      border-color: rgba(96, 165, 250, 0.5);
+      background: rgba(96, 165, 250, 0.14);
+      color: #dceaff;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(7, 17, 31, 0.82);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background: #10213a;
+      color: #dfe9f7;
+      z-index: 1;
+    }
+
+    td {
+      color: #cdd8ea;
+      font-family: var(--mono);
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-width: 28rem;
+    }
+
+    .empty {
+      padding: 30px 16px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .split {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 1000px) {
+      .grid,
+      .split {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <h1>SQLite Inspector</h1>
+      <p class="lede">
+        Open a local SQLite file and inspect tables in-browser. This stays client-side after the page and WebAssembly
+        runtime load. Useful targets in this repo include
+        <code>storage/kernel_registry.sqlite</code>
+        and any
+        <code>memory.sqlite</code>
+        file under
+        <code>storage/agents/</code>.
+        If the live DB looks empty, create a merged snapshot first with
+        <code>tools/sqlite-snapshot.sh storage/kernel_registry.sqlite</code>
+        and open the snapshot file instead.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="panel controls">
+        <div>
+          <label class="file-label" for="db-file">Choose SQLite File</label>
+          <input id="db-file" type="file" accept=".sqlite,.db,.sqlite3" />
+        </div>
+
+        <div>
+          <div class="meta-label">Selected File</div>
+          <div id="file-meta" class="meta-box">No file selected.</div>
+        </div>
+
+        <div>
+          <div class="meta-label">Status</div>
+          <div id="status" class="status">Load a SQLite file to begin.</div>
+        </div>
+
+        <div>
+          <label for="query">SQL Query</label>
+          <textarea id="query">SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name;</textarea>
+        </div>
+
+        <button id="run-query" class="button secondary" disabled>Run Query</button>
+      </section>
+
+      <section class="content">
+        <section class="panel">
+          <h2>Tables</h2>
+          <div id="table-list" class="table-list" style="margin-top: 14px;">
+            <div class="empty">No database loaded.</div>
+          </div>
+        </section>
+
+        <section class="split">
+          <section class="panel">
+            <h3>Table Preview</h3>
+            <div id="preview-wrap" class="table-wrap" style="margin-top: 14px;">
+              <div class="empty">Select a table.</div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h3>Query Results</h3>
+            <div id="query-wrap" class="table-wrap" style="margin-top: 14px;">
+              <div class="empty">Run a query.</div>
+            </div>
+          </section>
+        </section>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.min.js"></script>
+  <script>
+    const fileInput = document.getElementById('db-file');
+    const fileMeta = document.getElementById('file-meta');
+    const statusEl = document.getElementById('status');
+    const tableList = document.getElementById('table-list');
+    const previewWrap = document.getElementById('preview-wrap');
+    const queryWrap = document.getElementById('query-wrap');
+    const queryInput = document.getElementById('query');
+    const runQueryButton = document.getElementById('run-query');
+
+    let SQL;
+    let db = null;
+    let activeTable = null;
+
+    const setStatus = (text, kind = '') => {
+      statusEl.textContent = text;
+      statusEl.className = `status ${kind}`.trim();
+    };
+
+    const escapeHtml = (value) =>
+      String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;');
+
+    const renderTable = (container, resultSet) => {
+      if (!resultSet || !resultSet.columns || resultSet.columns.length === 0) {
+        container.innerHTML = '<div class="empty">No rows returned.</div>';
+        return;
+      }
+
+      const head = resultSet.columns.map((column) => `<th>${escapeHtml(column)}</th>`).join('');
+      const rows = resultSet.values.map((row) => {
+        const cells = row.map((cell) => `<td>${escapeHtml(cell === null ? 'NULL' : cell)}</td>`).join('');
+        return `<tr>${cells}</tr>`;
+      }).join('');
+
+      container.innerHTML = `
+        <table>
+          <thead><tr>${head}</tr></thead>
+          <tbody>${rows || '<tr><td colspan="' + resultSet.columns.length + '">No rows returned.</td></tr>'}</tbody>
+        </table>
+      `;
+    };
+
+    const execSingle = (sql) => {
+      const results = db.exec(sql);
+      return results[0] || null;
+    };
+
+    const loadTables = () => {
+      const tableResult = execSingle(`
+        SELECT name
+        FROM sqlite_master
+        WHERE type = 'table' AND name NOT LIKE 'sqlite_%'
+        ORDER BY name;
+      `);
+
+      const tableNames = tableResult ? tableResult.values.map((row) => row[0]) : [];
+      if (tableNames.length === 0) {
+        tableList.innerHTML = '<div class="empty">No user tables found.</div>';
+        previewWrap.innerHTML = '<div class="empty">No table preview available.</div>';
+        return;
+      }
+
+      tableList.innerHTML = '';
+      tableNames.forEach((tableName) => {
+        const chip = document.createElement('button');
+        chip.className = `chip${tableName === activeTable ? ' active' : ''}`;
+        chip.textContent = tableName;
+        chip.addEventListener('click', () => {
+          activeTable = tableName;
+          document.querySelectorAll('.chip').forEach((node) => node.classList.remove('active'));
+          chip.classList.add('active');
+          previewTable(tableName);
+        });
+        tableList.appendChild(chip);
+      });
+
+      activeTable = activeTable && tableNames.includes(activeTable) ? activeTable : tableNames[0];
+      document.querySelectorAll('.chip').forEach((node) => {
+        if (node.textContent === activeTable) node.classList.add('active');
+      });
+      previewTable(activeTable);
+    };
+
+    const previewTable = (tableName) => {
+      if (!db || !tableName) return;
+      try {
+        const result = execSingle(`SELECT * FROM "${tableName.replaceAll('"', '""')}" LIMIT 100;`);
+        renderTable(previewWrap, result);
+      } catch (error) {
+        previewWrap.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`;
+      }
+    };
+
+    const runQuery = () => {
+      if (!db) return;
+      try {
+        const result = execSingle(queryInput.value);
+        renderTable(queryWrap, result);
+        setStatus('Query completed.', 'good');
+      } catch (error) {
+        queryWrap.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`;
+        setStatus(`Query failed: ${error.message}`, 'bad');
+      }
+    };
+
+    const init = async () => {
+      setStatus('Loading sql.js runtime…');
+      SQL = await initSqlJs({
+        locateFile: (file) => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${file}`,
+      });
+      setStatus('Runtime loaded. Choose a SQLite file.', 'good');
+    };
+
+    fileInput.addEventListener('change', async (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      try {
+        setStatus(`Loading ${file.name}…`);
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        db = new SQL.Database(bytes);
+        runQueryButton.disabled = false;
+        fileMeta.textContent = `${file.name} (${bytes.byteLength.toLocaleString()} bytes)`;
+        setStatus(`Loaded ${file.name}.`, 'good');
+        loadTables();
+        runQuery();
+      } catch (error) {
+        db = null;
+        runQueryButton.disabled = true;
+        tableList.innerHTML = '<div class="empty">No database loaded.</div>';
+        previewWrap.innerHTML = '<div class="empty">Select a table.</div>';
+        queryWrap.innerHTML = '<div class="empty">Run a query.</div>';
+        setStatus(`Failed to load database: ${error.message}`, 'bad');
+      }
+    });
+
+    runQueryButton.addEventListener('click', runQuery);
+    queryInput.addEventListener('keydown', (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+        runQuery();
+      }
+    });
+
+    init().catch((error) => {
+      setStatus(`Failed to load runtime: ${error.message}`, 'bad');
+    });
+  </script>
+</body>
+</html>

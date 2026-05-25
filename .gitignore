@@ -1,0 +1,54 @@
+# OS
+.DS_Store
+node_modules/
+build/
+dist/
+.cache/
+*.log
+*.tsbuildinfo
+
+# Go Backend
+.go_cache/
+.go_tmp/
+sairgent-kernel
+kernel.log
+audit.log
+
+# Data/Config (assuming these are local dev state)
+conversation_store.json
+provider_connections.json
+models.json
+railway.json
+
+# Python virtual environments
+venv/
+**/venv/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Temporary/Test
+tmp/
+*.test.log
+ops/logs/*.tar.gz
+.ops/temp/
+
+# Rust Target
+target/
+target-isolated/
+**/target/
+**/target-isolated/
+**/dist/
+
+# Runtime / local state
+storage/
+sairgent_harness/storage/
+sairgent_deck/storage/
+.sairgent-runtime/
+**/*.sqlite*
+
+# Security — vault key fallback and secure bundle must never be committed
+vault.key
+secure_bundle.json
