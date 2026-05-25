@@ -1,5 +1,7 @@
 # Sairgent
 
+![Sairgent Workspace — agent delegation tree with Perry (COO) delegating to Lois (CIO) and Lex (CFO), and Lois delegating to Stacker (Analyst)](./docs/sairgent-workspace.png)
+
 **This repository is archived.** Development ended in May 2026.
 
 The full wind-down story is here: [I built a company in a box. Then I found one already built.](https://davidpengelley.substack.com/p/i-built-a-company-in-a-box-then-i)
